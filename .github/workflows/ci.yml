@@ -1,0 +1,29 @@
+name: Build and test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  portable-dsp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Configure DSP
+        run: cmake -S . -B build/dsp -DDAA_BUILD_APP=OFF -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build/dsp --parallel 2
+      - name: Test
+        run: ctest --test-dir build/dsp --output-on-failure
+  windows-app:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Set up local Qt and compiler
+        shell: pwsh
+        run: ./scripts/setup.ps1
+      - name: Build and test
+        shell: pwsh
+        run: ./scripts/build.ps1 -Test

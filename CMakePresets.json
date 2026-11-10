@@ -1,0 +1,22 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "windows-local",
+      "displayName": "Windows - project-local Qt/MinGW",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_MAKE_PROGRAM": "${sourceDir}/.tools/python/Scripts/ninja.exe",
+        "CMAKE_CXX_COMPILER": "${sourceDir}/.tools/qt/Tools/mingw1310_64/bin/g++.exe",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/.tools/qt/6.8.3/mingw_64"
+      },
+      "environment": {
+        "PATH": "${sourceDir}/.tools/qt/Tools/mingw1310_64/bin;${sourceDir}/.tools/qt/6.8.3/mingw_64/bin;$penv{PATH}"
+      }
+    }
+  ],
+  "buildPresets": [{"name": "windows-local", "configurePreset": "windows-local", "jobs": 4}],
+  "testPresets": [{"name": "windows-local", "configurePreset": "windows-local", "output": {"outputOnFailure": true}}]
+}
